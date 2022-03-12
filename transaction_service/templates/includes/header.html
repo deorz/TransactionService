@@ -1,0 +1,20 @@
+{% load static %}
+<header>
+    <nav class="navbar navbar-dark" style="background-color: gray">
+        <div class="container" style="margin-left: 0px">
+            <a class="navbar-brand"
+               href="{% url 'users:sign_up' %}">
+                Transaction<span
+                    style="color: black">Service</span>
+            </a>
+            <a class="nav-item" style="color: white"
+               href="{% url 'users:sign_up' %}">
+                Войти
+            </a>
+            <a class="nav-item" style="color: white"
+               href="{% url 'users:sign_up' %}">
+                Зарегистрироваться
+            </a>
+        </div>
+    </nav>
+</header>
