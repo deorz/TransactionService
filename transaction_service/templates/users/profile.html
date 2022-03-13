@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Профиль пользователя: {{ user.username }}
+{% endblock title %}
+
+{% block content %}
+<div class="container justify-content-start mt-5">
+    <div class="card">
+        <div class="top-container">
+            <div class="ml-3">
+                <h5 class="name">{{ user.get_full_name }}</h5>
+                <p class="mail">{{ user.email }}</p>
+            </div>
+        </div>
+        <div class="middle-container d-flex justify-content-between align-items-center mt-3 p-2">
+
+            <div class="d-flex flex-column text-right mr-2"> <span class="current-balance">Текущий баланс</span> <span class="amount">{{ money_rest }} у.е.</span> </div>
+        </div>
+        <div class="beautiful-div mt-4"><a class="beautiful-button btn" href="{% url 'transactions:create_transaction' %}">Новая транзакция</a></div>
+        <div class="beautiful-div mt-4"> <a class="beautiful-button btn" href="{% url 'transactions:create_wallet' %}">Создать кошелёк</a> </div>
+        <div class="beautiful-div mt-4"> <span class="beautiful-button btn">История транзакций</span> </div>
+    </div>
+</div>
+
+{% endblock content %}

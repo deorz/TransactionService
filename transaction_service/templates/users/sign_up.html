@@ -4,14 +4,23 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="form-control">
+    <div class="container d-flex mt-5 justify-content-center">
+    <div class="card">
         <form method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn-dark"
+            {% for field in form %}
+                <label for="{{ field.id_for_label }}">
+                {{ field.label }}
+                </label>
+                <p>
+                {{ field }}
+                </p>
+            {% endfor %}
+            <button type="submit" class="btn btn-outline-dark"
                     style="border-radius: 10px;">
                 Зарегистрироваться
             </button>
         </form>
+    </div>
     </div>
 {% endblock content %}

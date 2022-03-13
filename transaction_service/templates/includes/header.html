@@ -1,20 +1,46 @@
 {% load static %}
 <header>
-    <nav class="navbar navbar-dark" style="background-color: gray">
+    <nav class="navbar navbar-dark" style="background-color: rebeccapurple">
         <div class="container" style="margin-left: 0px">
-            <a class="navbar-brand"
-               href="{% url 'users:sign_up' %}">
+            <a class="navbar-brand justify-content-center"
+               href="{% url 'index:main_page' %}">
+                <img src="{% static 'img/credit-card.svg' %}"
+                     class="d-inline-block align-top">
                 Transaction<span
                     style="color: black">Service</span>
             </a>
-            <a class="nav-item" style="color: white"
-               href="{% url 'users:sign_up' %}">
-                Войти
-            </a>
-            <a class="nav-item" style="color: white"
-               href="{% url 'users:sign_up' %}">
-                Зарегистрироваться
-            </a>
+        </div>
+        <div class="col-3">
+            <ul class="nav nav-pills">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link link-dark"
+                           href="{% url 'users:profile' %}">Профиль</a>
+                    </li>
+                    <li class="navbar-text">
+                        Пользователь: {{ user.username }}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark">
+                            Выход
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link link-dark"
+                           href="{% url 'users:login' %}">
+                            Войти
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark"
+                           href="{% url 'users:sign_up' %}">
+                            Зарегистрироваться
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+
         </div>
     </nav>
 </header>
