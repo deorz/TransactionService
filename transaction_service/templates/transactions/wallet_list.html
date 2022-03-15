@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Список кошельков
+{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-start mt-4">
+                    <div class="card" style="width: 100%;">
+                    <span class="text-center">Кошельки</span>
+                        {% for wallet in page_obj %}
+                            <div class="beautiful-div mt-4">
+                                <a class="btn" href="{% url 'transactions:wallet_detail' wallet.id %}">
+                                    <p class="text-start">Название кошелька: {{ wallet.name }}</p>
+                                    <p class="text-start">Остаток средств: {{ wallet.money_rest }} у.е.</p>
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+{% endblock content %}

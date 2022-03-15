@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Кошелёк: {{ object.name }}
+{% endblock title %}
+
+{% block content %}
+    <div class="container justify-content-start mt-4">
+                    <div class="card" style="width: 100%;">
+                    <span class="text-center">Кошелёк {{ object.name }}</span>
+                        <div class="beautiful-div mt-4">
+                            <span class="btn">
+                                <p class="text-start">Название кошелька: {{ object.name }}</p>
+                                <p class="text-start">Остаток средств: {{ object.money_rest }} у.е.</p>
+                                <p class="text-start">Создан: {{ object.date_created }}</p>
+                                <p class="text-start">Уникальный идентификатор: {{ object.id }}</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+{% endblock content %}

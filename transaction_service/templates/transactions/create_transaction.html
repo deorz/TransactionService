@@ -5,6 +5,7 @@
 {% endblock title %}
 
 {% block content %}
+    {% comment %}
     <div class="form-control">
         <form method="post">
             {% csrf_token %}
@@ -15,4 +16,23 @@
             </button>
         </form>
     </div>
+    {% endcomment %}
+    <div>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <table style="display: none">
+            {{ view.formset.empty_form }}
+        </table>
+
+        <table>
+            {{ view.formset }}
+        </table>
+
+        <span id="add-form" class="button">Add form</span>
+
+        <input type="submit" />
+    </form>
+</div>
 {% endblock content %}
