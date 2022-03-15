@@ -15,11 +15,6 @@ body {
     align-items: center
 }
 
-.profile-image {
-    border-radius: 10px;
-    border: 2px solid #5957f9
-}
-
 .name {
     font-size: 15px;
     font-weight: bold;
@@ -42,12 +37,6 @@ body {
 
 .middle-container:hover {
     border: 1px solid #5957f9
-}
-
-.dollar-div {
-    background-color: #5957f9;
-    padding: 12px;
-    border-radius: 10px
 }
 
 .round-div {
@@ -75,15 +64,21 @@ body {
 }
 
 .beautiful-div {
-    border-left: 2px solid #5957f9;
+    border-radius: 10px;
+    border-left: 1px solid #5957f9;
+    border-right: 1px solid #5957f9;
     display: flex;
     align-items: center
 }
 
 .beautiful-div:hover {
+    border-bottom: 1px solid #5957f9 !important;
+}
+/*
+.beautiful-div:hover {
     border-bottom: 1px solid #dee2e6 !important
 }
-
+*/
 .beautiful-button {
     font-size: 16px;
     font-weight: 700;
