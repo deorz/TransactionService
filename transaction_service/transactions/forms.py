@@ -1,32 +1,55 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 from users.models import CustomUser
-from .models import Wallets, Transactions
+from .models import Wallet, Transaction
+
+from dal import autocomplete
 
 
 class TransactionForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request')
+
         super().__init__(*args, **kwargs)
-        self.fields['recipient'].empty_label = 'Пользователь не выбран'
-        self.fields['wallets_to_pay'].queryset = Wallets.objects.filter(
-            user=self.request.user
-        )
+
         self.fields[
-            'recipient'].queryset = CustomUser.objects.all().exclude(
-            username=self.request.user
-        )
+            'wallets_to_pay'] = forms.ModelMultipleChoiceField(
+            queryset=Wallet.objects.filter(
+                user=self.request.user),
+            widget=forms.CheckboxSelectMultiple,
+            label='Кошельки для оплаты')
 
-    wallets_to_pay = forms.ModelMultipleChoiceField(
-        queryset=None, widget=forms.CheckboxSelectMultiple
-    )
+        # self.fields['recipient'] = forms.ModelChoiceField(
+        #     queryset=CustomUser.objects.all().exclude(
+        #         username=self.request.user),
+        #     label='Получатель')
 
-    recipient = forms.ModelChoiceField(queryset=None)
+        # self.fields[
+        #     'recipient_wallet'].queryset = Wallet.objects.all().exclude(
+        #     user=self.request.user)
+
+        # self.fields[
+        #     'recipient'].empty_label = 'Пользователь не выбран'
 
     class Meta:
-        model = Transactions
-        fields = ('recipient', 'amount_money', 'wallets_to_pay')
+        model = Transaction
+        fields = ('recipient_wallet',
+                  'wallets_to_pay',
+                  'amount_money')
+        widgets = {
+            'recipient_wallet': autocomplete.ModelSelect2(
+                url='wallet-autocomplete/')
+        }
+
+    def clean_amount_money(self):
+        amount_money = self.cleaned_data['amount_money']
+        if amount_money <= 0:
+            raise ValidationError(
+                _('Вы не можете перевести эту сумму'))
+        return amount_money
 
 
 class WalletForm(forms.ModelForm):
@@ -35,23 +58,26 @@ class WalletForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     class Meta:
-        model = Wallets
-        fields = ('name', 'money_rest')
+        model = Wallet
+        fields = ('name',
+                  'money_rest')
 
     def clean_money_rest(self):
         money_rest = self.cleaned_data['money_rest']
-        if money_rest == 0:
-            raise ValidationError('На вашем кошельке не может быть 0')
+        if money_rest < 0:
+            raise ValidationError(_(
+                'На вашем кошельке не может быть отрицательная сумма'
+            ))
         return money_rest
 
     def clean_name(self):
         name = self.cleaned_data['name']
         user = self.request.user
-        names_queryset = Wallets.objects.filter(
+        names_queryset = Wallet.objects.filter(
             user=user).values('name')
         for names in names_queryset:
             if name == names['name']:
-                raise ValidationError(
+                raise ValidationError(_(
                     'У вас уже есть кошелёк с таким именем'
-                )
+                ))
         return name
