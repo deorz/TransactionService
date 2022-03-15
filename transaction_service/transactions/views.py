@@ -10,7 +10,6 @@ from .forms import TransactionForm, WalletForm
 from .models import Transaction, Wallet, Link
 
 
-@login_required
 class WalletsAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated:
@@ -26,7 +25,6 @@ class WalletsAutocomplete(autocomplete.Select2QuerySetView):
         return queryset
 
 
-@login_required
 class CreateTransactionView(CreateView):
     model = Transaction
     form_class = TransactionForm
@@ -65,7 +63,6 @@ class CreateTransactionView(CreateView):
         return kwargs
 
 
-@login_required
 class CreateWalletView(CreateView):
     model = Wallet
     form_class = WalletForm
@@ -84,7 +81,6 @@ class CreateWalletView(CreateView):
         return super().form_valid(form)
 
 
-@login_required
 class WalletListView(ListView):
     template_name = 'transactions/wallet_list.html'
     paginate_by = 10
@@ -93,7 +89,6 @@ class WalletListView(ListView):
         return Wallet.objects.filter(user=self.request.user)
 
 
-@login_required
 class TransactionHistoryView(ListView):
     paginate_by = 10
     template_name = 'transactions/transaction_history.html'
@@ -105,13 +100,11 @@ class TransactionHistoryView(ListView):
         )
 
 
-@login_required
 class TransactionDetailView(DetailView):
     model = Transaction
     template_name = 'transactions/transaction_detail.html'
 
 
-@login_required
 class WalletDetailView(DetailView):
     model = Wallet
     template_name = 'transactions/wallet_detail.html'
