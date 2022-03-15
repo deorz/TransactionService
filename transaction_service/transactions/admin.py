@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Transactions, Wallets
+from .models import Transaction, Wallet, Link
 
-admin.site.register(Transactions)
-admin.site.register(Wallets)
+admin.site.register(Transaction)
+admin.site.register(Wallet)
+admin.site.register(Link)

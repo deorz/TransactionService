@@ -5,45 +5,88 @@ from django.db import models
 from users.models import CustomUser
 
 
-class Wallets(models.Model):
+class Wallet(models.Model):
     user = models.ForeignKey(
         CustomUser,
         blank=False,
         on_delete=models.CASCADE,
         related_name='wallets'
     )
-    name = models.CharField(max_length=100, default='')
-    money_rest = models.DecimalField(max_digits=19,
-                                     decimal_places=10,
+    name = models.CharField(verbose_name='Имя счёта',
+                            max_length=100, )
+    money_rest = models.DecimalField(verbose_name='Остаток средств',
+                                     max_digits=12,
+                                     decimal_places=2,
                                      null=False)
     id = models.UUIDField(primary_key=True,
                           default=uuid.uuid4,
                           unique=True,
                           editable=False,
                           )
+    date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_created']
 
     def __str__(self):
-        return f'Счёт: {self.name}, остаток: {self.money_rest}'
+        return f'Имя счёта: {self.name}'
 
 
-class Transactions(models.Model):
+class Transaction(models.Model):
     sender = models.ForeignKey(
         CustomUser,
         blank=False,
         on_delete=models.DO_NOTHING,
-        related_name='transactions',
+        related_name='transaction_sender',
+        verbose_name='Отправитель'
     )
     recipient = models.ForeignKey(
         CustomUser,
         blank=False,
         on_delete=models.DO_NOTHING,
-        related_name='transactions_recipient'
+        related_name='transaction_recipient',
+        verbose_name='Получатель'
     )
-    amount_money = models.DecimalField(max_digits=19,
-                                       decimal_places=10,
+
+    recipient_wallet = models.ForeignKey(
+        Wallet,
+        blank=False,
+        on_delete=models.DO_NOTHING,
+        related_name='recipient_wallet',
+        verbose_name='Кошелёк получателя',
+    )
+
+    amount_money = models.DecimalField(verbose_name='Сумма перевода',
+                                       max_digits=12,
+                                       decimal_places=2,
                                        blank=False)
-    wallets_to_pay = models.ForeignKey(
-        Wallets,
-        on_delete=models.DO_NOTHING
+
+    wallets_to_pay = models.ManyToManyField(
+        Wallet,
+        through='Link',
+        verbose_name='Кошельки для оплаты'
     )
-    date = models.DateTimeField(auto_now_add=True)
+
+    date_provided = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-date_provided']
+
+    def __str__(self):
+        return (f'{self.date_provided.strftime("%H:%M:%S %a %d-%m-%Y")} '
+                f'перевод от {self.sender.get_full_name()} к '
+                f'{self.recipient.get_full_name()} '
+                f'сумма: {self.amount_money} у.е.')
+
+
+class Link(models.Model):
+    wallets = models.ForeignKey(
+        Wallet,
+        on_delete=models.DO_NOTHING,
+        verbose_name='Кошелёк'
+    )
+    transactions = models.ForeignKey(
+        Transaction,
+        on_delete=models.CASCADE,
+        verbose_name='Транзакция'
+    )
