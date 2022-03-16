@@ -29,7 +29,8 @@ class Wallet(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return f'Имя счёта: {self.name}, остаток: {self.money_rest} у.е.'
+        return (f'Имя пользователя: {self.user.username} '
+                f'Имя счёта: {self.name}')
 
 
 class Transaction(models.Model):
