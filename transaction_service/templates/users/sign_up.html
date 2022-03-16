@@ -4,16 +4,71 @@
 {% endblock title %}
 
 {% block content %}
-    <div class="container justify-content-start mt-4">
-        <div class="card" style="width: 100%;">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-dark"
-                    style="border-radius: 10px;">
-                Зарегистрироваться
-            </button>
-        </form>
-    </div>
+    {% load userfilters %}
+    <div class="container w- 100 h-100">
+        <div class="row h-100">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                <div class="d-table-cell align-middle">
+                    <div class="text-center mt-4">
+                        <h1 class="h2">Регистрация</h1>
+                        <p class="lead">
+                            Начни пользоваться TransactionService уже
+                            сейчас!
+                        </p>
+                    </div>
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="m-sm-4">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.non_field_errors }}
+                                    <div class="form-group">
+                                        {{ form.first_name.errors }}
+                                        <label id="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                                        {{ form.first_name|addattrs:'form-control form-control-lg,Имя' }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.last_name.errors }}
+                                        <label id="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                                        {{ form.last_name|addattrs:'form-control form-control-lg,Фамилия' }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.username.errors }}
+                                        <label id="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                                        {{ form.username|addattrs:'form-control form-control-lg,Имя пользователя' }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.email.errors }}
+                                        <label id="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                        {{ form.email|addattrs:'form-control form-control-lg,Email' }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.password1.errors }}
+                                        <label id="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                                        {{ form.password1|addattrs:'form-control form-control-lg,Придумайте пароль' }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ form.password2.errors }}
+                                        <label id="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                                        {{ form.password2|addattrs:'form-control form-control-lg,Подтверждения пароля' }}
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <a href="{% url 'users:login' %}"
+                                                class="btn btn-link px-0">
+                                            Уже есть аккаунт?
+                                        </a>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit"
+                                           class="btn btn-lg btn-outline-dark">Зарегистрироваться</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
