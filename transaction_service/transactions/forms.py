@@ -1,11 +1,9 @@
+from dal import autocomplete
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from users.models import CustomUser
 from .models import Wallet, Transaction
-
-from dal import autocomplete
 
 
 class TransactionForm(forms.ModelForm):
@@ -15,24 +13,14 @@ class TransactionForm(forms.ModelForm):
 
         super().__init__(*args, **kwargs)
 
-        self.fields[
-            'wallets_to_pay'] = forms.ModelMultipleChoiceField(
+        self.fields['wallets_to_pay'] = forms.ModelMultipleChoiceField(
             queryset=Wallet.objects.filter(
                 user=self.request.user),
             widget=forms.CheckboxSelectMultiple,
             label='Кошельки для оплаты')
 
-        # self.fields['recipient'] = forms.ModelChoiceField(
-        #     queryset=CustomUser.objects.all().exclude(
-        #         username=self.request.user),
-        #     label='Получатель')
-
-        # self.fields[
-        #     'recipient_wallet'].queryset = Wallet.objects.all().exclude(
-        #     user=self.request.user)
-
-        # self.fields[
-        #     'recipient'].empty_label = 'Пользователь не выбран'
+        self.fields[
+            'recipient_wallet'].empty_label = 'Пользователь не выбран'
 
     class Meta:
         model = Transaction

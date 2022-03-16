@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView
 from django.urls import reverse_lazy
 
 from transactions.models import Wallet, Transaction
@@ -12,7 +13,7 @@ class SignUp(CreateView):
     template_name = 'users/sign_up.html'
 
 
-class Profile(ListView):
+class Profile(LoginRequiredMixin, ListView):
     template_name = 'users/profile.html'
 
     def get_queryset(self):

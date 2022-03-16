@@ -29,7 +29,7 @@ class Wallet(models.Model):
         ordering = ['-date_created']
 
     def __str__(self):
-        return f'Имя счёта: {self.name}'
+        return f'Имя счёта: {self.name}, остаток: {self.money_rest} у.е.'
 
 
 class Transaction(models.Model):
@@ -54,6 +54,7 @@ class Transaction(models.Model):
         on_delete=models.DO_NOTHING,
         related_name='recipient_wallet',
         verbose_name='Кошелёк получателя',
+        help_text='Введите имя пользователя или почту получателя'
     )
 
     amount_money = models.DecimalField(verbose_name='Сумма перевода',
@@ -80,13 +81,17 @@ class Transaction(models.Model):
 
 
 class Link(models.Model):
-    wallets = models.ForeignKey(
+    wallet = models.ForeignKey(
         Wallet,
         on_delete=models.DO_NOTHING,
         verbose_name='Кошелёк'
     )
-    transactions = models.ForeignKey(
+    transaction = models.ForeignKey(
         Transaction,
         on_delete=models.CASCADE,
         verbose_name='Транзакция'
     )
+
+    def __str__(self):
+        return (f'{self.transaction.id}: {self.transaction.sender} - '
+                f'{self.transaction.recipient}')
