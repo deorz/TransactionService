@@ -18,10 +18,16 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link link-dark"
+                           href="{% url 'users:password_change' %}">Изменение
+                            пароля</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link link-dark"
                            href="{% url 'users:logout' %}">
                             Выход
                         </a>
                     </li>
+
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link link-dark"

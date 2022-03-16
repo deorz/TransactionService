@@ -5,34 +5,63 @@
 {% endblock title %}
 
 {% block content %}
-    {% comment %}
-    <div class="form-control">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-outline-dark"
-                    style="border-radius: 10px;">
-                Перевести деньги
-            </button>
-        </form>
+    {% load userfilters %}
+    <div class="container w- 100 h-100">
+        <div class="row h-100">
+            <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+                <div class="d-table-cell align-middle">
+                    <div class="text-center mt-4">
+                        <h1 class="h2">Новая транзакция</h1>
+                    </div>
+                    <div class="card w-100">
+                        <div class="card-body">
+                            <div class="m-sm-4">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.non_field_errors }}
+                                    <div class="form-group">
+                                        {{ form.recipient_wallet.errors }}
+                                        <label id="{{ form.recipient_wallet.id_for_label }}">{{ form.recipient_wallet.label }}</label>
+                                        {{ form.recipient_wallet|addclass:'form-control form-control-lg' }}
+
+                                        {{ form.recipient_wallet.help_text }}
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        {{ form.wallets_to_pay.errors }}
+                                        <label id="{{ form.wallets_to_pay.id_for_label }}">{{ form.wallets_to_pay.label }}</label>
+                                        {% for wallet in form.wallets_to_pay %}
+                                            <ul class="list-group">
+                                                <li class="list-group-item mt-1">
+                                                    {{ wallet }}
+                                                </li>
+                                            </ul>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mt-2">
+                                        {{ form.amount_money.errors }}
+                                        <label id="{{ form.amount_money.id_for_label }}">{{ form.amount_money.label }}</label>
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">у.е.</span>
+                                            </div>
+                                            {{ form.amount_money|addclass:'form-control' }}
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">.00</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center mt-3">
+                                        <button type="submit"
+                                                class="btn btn-lg btn-outline-dark">
+                                            Перевести
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    {% endcomment %}
-    <div>
-    <form action="" method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-
-        <table style="display: none">
-            {{ view.formset.empty_form }}
-        </table>
-
-        <table>
-            {{ view.formset }}
-        </table>
-
-        <span id="add-form" class="button">Add form</span>
-
-        <input type="submit" />
-    </form>
-</div>
 {% endblock content %}

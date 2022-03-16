@@ -6,25 +6,26 @@
 
 {% block content %}
     <div class="container justify-content-start mt-4">
-                    <div class="card" style="width: 100%;">
-                    <span class="text-center">Транзакция от {{ object.date_provided }}</span>
-                        <div class="beautiful-div mt-4">
+        <div class="card" style="width: 100%;">
+            <span class="text-center">Транзакция от {{ object.date_provided }}</span>
+            <div class="beautiful-div mt-4">
                             <span class="btn">
                                 <p class="text-start">Дата проведения: {{ object.date_provided }}</p>
                                 <p class="text-start">От: {{ object.sender.get_full_name }}</p>
                                 <p class="text-start">
                                     Счета отправителя:
-                                        {% for wallet in object.wallets_to_pay.all %}
-                                            <span class="btn btn-light">
+                                    {% for wallet in object.wallets_to_pay.all %}
+                                        <span class="btn btn-light">
                                                 {{ wallet.name }}
                                             </span>
-                                        {% endfor %}
+                                    {% endfor %}
                                 </p>
                                 <p class="text-start">Кому: {{ object.recipient.get_full_name }}</p>
-                                <p class="text-start">Счёт получателя: </p>
+                                <p class="text-start">Счёт получателя: <span
+                                        class="btn btn-light"> {{ object.recipient_wallet.name }}</span> </p>
                                 <p class="text-start">Сумма: {{ object.amount_money }} у.е</p>
                             </span>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
